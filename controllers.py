@@ -1,12 +1,11 @@
-import gradio as gr
 import argparse
 import gdown
 import cv2
 import numpy as np
 import os
 import sys
-sys.path.append(sys.path[0]+"/tracker")
-sys.path.append(sys.path[0]+"/tracker/model")
+sys.path.append(os.path.dirname(sys.path[0])+"/tracker")
+sys.path.append(os.path.dirname(sys.path[0])+"/tracker/model")
 from track_anything import TrackingAnything
 from track_anything import parse_augment
 import requests
@@ -51,6 +50,12 @@ def download_checkpoint_from_google_drive(file_id, folder, filename):
 
     return filepath
 
+def byte_to_file(byte_stream, filename):
+    with open(filename, 'wb') as f:
+        f.write(byte_stream)
+    return filename
+
+
 # convert points input to prompt state
 def get_prompt(click_state, click_input):
     inputs = json.loads(click_input)
@@ -79,7 +84,7 @@ def get_frames_from_video(video_input, video_state):
     Return 
         [[0:nearest_frame], [nearest_frame:], nearest_frame]
     """
-    video_path = video_input
+    video_path = byte_to_file(video_input, f"./cachedvideo_{video_input.name}")
     frames = []
     user_name = time.time()
     operation_log = [("",""),("Upload video already. Try click the image for adding targets to track and inpaint.","Normal")]
@@ -114,13 +119,7 @@ def get_frames_from_video(video_input, video_state):
     video_info = "Video Name: {}, FPS: {}, Total Frames: {}, Image Size:{}".format(video_state["video_name"], video_state["fps"], len(frames), image_size)
     model.samcontroler.sam_controler.reset_image() 
     model.samcontroler.sam_controler.set_image(video_state["origin_images"][0])
-    return video_state, video_info, video_state["origin_images"][0], gr.update(visible=True, maximum=len(frames), value=1), gr.update(visible=True, maximum=len(frames), value=len(frames)), \
-                        gr.update(visible=True),\
-                        gr.update(visible=True), gr.update(visible=True), \
-                        gr.update(visible=True), gr.update(visible=True), \
-                        gr.update(visible=True), gr.update(visible=True), \
-                        gr.update(visible=True), gr.update(visible=True), \
-                        gr.update(visible=True, value=operation_log)
+    return video_state, video_info
 
 def run_example(example):
     return video_input
