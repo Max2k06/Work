@@ -10,8 +10,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from model.network import XMem
-from model.losses import LossComputer
+from models.network import XMem
+from models.losses import LossComputer
 from util.log_integrator import Integrator
 from util.image_saver import pool_pairs
 

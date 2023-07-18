@@ -4,8 +4,10 @@ import cv2
 import numpy as np
 import os
 import sys
-sys.path.append(os.path.dirname(sys.path[0])+"/tracker")
-sys.path.append(os.path.dirname(sys.path[0])+"/tracker/model")
+sys.path.append(os.path.dirname(sys.path[0])+"/tracker/")
+sys.path.append(os.path.dirname(sys.path[0])+"/tracker/models")
+print("!!!!!!")
+print(sys.path)
 from track_anything import TrackingAnything
 from track_anything import parse_augment
 import requests
