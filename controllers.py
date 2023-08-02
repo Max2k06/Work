@@ -1,11 +1,13 @@
+#remove gradio after finding type definition for selectdata
+import gradio as gr
 import argparse
 import gdown
 import cv2
 import numpy as np
 import os
 import sys
-sys.path.append(os.path.dirname(sys.path[0])+"/tracker/")
-sys.path.append(os.path.dirname(sys.path[0])+"/tracker/models")
+sys.path.append("."+os.path.dirname(sys.path[0])+"/tracker/")
+sys.path.append("."+os.path.dirname(sys.path[0])+"/tracker/models")
 print("!!!!!!")
 print(sys.path)
 from track_anything import TrackingAnything
@@ -78,7 +80,7 @@ def get_prompt(click_state, click_input):
 
 
 # extract frames from upload video
-def get_frames_from_video(video_input, video_state):
+def get_frames_from_video(model, video_input, video_state):
     """
     Args:
         video_path:str
@@ -86,7 +88,7 @@ def get_frames_from_video(video_input, video_state):
     Return 
         [[0:nearest_frame], [nearest_frame:], nearest_frame]
     """
-    video_path = byte_to_file(video_input, f"./cachedvideo_{video_input.name}")
+    video_path = byte_to_file(video_input.read(), f"./cachedvideo_{video_input.name}")
     frames = []
     user_name = time.time()
     operation_log = [("",""),("Upload video already. Try click the image for adding targets to track and inpaint.","Normal")]
@@ -108,7 +110,7 @@ def get_frames_from_video(video_input, video_state):
         print("read_frame_source:{} error. {}\n".format(video_path, str(e)))
     image_size = (frames[0].shape[0],frames[0].shape[1]) 
     # initialize video_state
-    video_state = {
+    video_state.update({
         "user_name": user_name,
         "video_name": os.path.split(video_path)[-1],
         "origin_images": frames,
@@ -118,10 +120,11 @@ def get_frames_from_video(video_input, video_state):
         "select_frame_number": 0,
         "fps": fps
         }
-    video_info = "Video Name: {}, FPS: {}, Total Frames: {}, Image Size:{}".format(video_state["video_name"], video_state["fps"], len(frames), image_size)
+    )
+    video_state["video_info"] = "Video Name: {}, FPS: {}, Total Frames: {}, Image Size:{}".format(video_state["video_name"], video_state["fps"], len(frames), image_size)
     model.samcontroler.sam_controler.reset_image() 
     model.samcontroler.sam_controler.set_image(video_state["origin_images"][0])
-    return video_state, video_info
+
 
 def run_example(example):
     return video_input
@@ -160,7 +163,7 @@ def get_resize_ratio(resize_ratio_slider, interactive_state):
     return interactive_state
 
 # use sam to get the mask
-def sam_refine(video_state, point_prompt, click_state, interactive_state, evt:gr.SelectData):
+def sam_refine(model, video_state, point_prompt, interactive_state, evt, click_state):   
     """
     Args:
         template_frame: PIL.Image
@@ -168,10 +171,10 @@ def sam_refine(video_state, point_prompt, click_state, interactive_state, evt:gr
         click_state: [[points], [labels]]
     """
     if point_prompt == "Positive":
-        coordinate = "[[{},{},1]]".format(evt.index[0], evt.index[1])
+        coordinate = "[[{},{},1]]".format(evt[0], evt[1])
         interactive_state["positive_click_times"] += 1
     else:
-        coordinate = "[[{},{},0]]".format(evt.index[0], evt.index[1])
+        coordinate = "[[{},{},0]]".format(evt[0], evt[1])
         interactive_state["negative_click_times"] += 1
     
     # prompt for sam model

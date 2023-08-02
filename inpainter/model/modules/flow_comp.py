@@ -70,6 +70,7 @@ class SPyNet(nn.Module):
             if isinstance(pretrained, str):
                 print("load pretrained SPyNet...")
                 load_checkpoint(self, pretrained, strict=True)
+                print("Done loading Spynet :) ")
             elif pretrained is not None:
                 raise TypeError('[pretrained] should be str or None, '
                                 f'but got {type(pretrained)}.')

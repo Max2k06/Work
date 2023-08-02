@@ -1,3 +1,8 @@
+
+from controllers import download_checkpoint, download_checkpoint_from_google_drive
+from track_anything import TrackingAnything
+
+
 def get_model(args: dict): 
     # check and download checkpoints if needed
     SAM_checkpoint_dict = {
@@ -28,4 +33,6 @@ def get_model(args: dict):
 
     # initialize sam, xmem, e2fgvi models
     model = TrackingAnything(SAM_checkpoint, xmem_checkpoint, e2fgvi_checkpoint,args)
+
+    return model
 
