@@ -129,22 +129,15 @@ def get_frames_from_video(model, video_input, video_state):
 def run_example(example):
     return video_input
 # get the select frame from gradio slider
-def select_template(image_selection_slider, video_state, interactive_state, mask_dropdown):
+def select_template(model, image_selection_slider, video_state, interactive_state):
 
-    # images = video_state[1]
-    image_selection_slider -= 1
+    # image_selection_slider -= 1
     video_state["select_frame_number"] = image_selection_slider
 
     # once select a new template frame, set the image in sam
 
     model.samcontroler.sam_controler.reset_image()
     model.samcontroler.sam_controler.set_image(video_state["origin_images"][image_selection_slider])
-
-    # update the masks when select a new template frame
-    # if video_state["masks"][image_selection_slider] is not None:
-        # video_state["painted_images"][image_selection_slider] = mask_painter(video_state["origin_images"][image_selection_slider], video_state["masks"][image_selection_slider])
-    if mask_dropdown:
-        print("ok")
     operation_log = [("",""), ("Select frame {}. Try click image and add mask for tracking.".format(image_selection_slider),"Normal")]
 
 
@@ -263,7 +256,7 @@ def vos_tracking_video(model, video_state, interactive_state, mask_dropdown=[]):
     # clear GPU memory
     model.xmem.clear_memory()
 
-    if interactive_state["track_end_number"]: 
+    if 'track_end_number' in interactive_state and interactive_state["track_end_number"]:
         video_state["masks"][video_state["select_frame_number"]:interactive_state["track_end_number"]] = masks
         video_state["logits"][video_state["select_frame_number"]:interactive_state["track_end_number"]] = logits
         video_state["painted_images"][video_state["select_frame_number"]:interactive_state["track_end_number"]] = painted_images

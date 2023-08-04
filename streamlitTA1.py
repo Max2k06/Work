@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from streamlit.runtime.uploaded_file_manager import UploadedFile
-from controllers import get_frames_from_video, vos_tracking_video
+from controllers import get_end_number, get_frames_from_video, select_template, vos_tracking_video
 from controllers import sam_refine
 import skimage
 import plotly.express as px
@@ -71,7 +71,7 @@ if 'video_info' in st.session_state['stvideo_state'] :
         pass
    
 if 'interactive_state' not in st.session_state:
-    st.session_state['interactive_state']= {"positive_click_times":0, "negative_click_times":0}
+    st.session_state['interactive_state']= {"positive_click_times":0, "negative_click_times":0, "inference_times":0}
 
 if 'click_state' not in st.session_state:
     st.session_state['click_state']= [[], []]
@@ -91,6 +91,11 @@ st.button("Track?", on_click=vos_tracking_video,args=(st.session_state['model'],
 
 if 'video_output' in st.session_state['stvideo_state']:
     st.video(st.session_state['stvideo_state']['video_output'])
+
+# slider_info= st.slider('Choose Frame', min_value=0, max_value=len(st.session_state['stvideo_state']['origin_images'])-1, value=(0, len(st.session_state['stvideo_state']['origin_images'])-1))
+
+# get_end_number(slider_info[1], st.session_state['stvideo_state'], st.session_state['interactive_state'])
+# select_template(st.session_state['model'], slider_info[0], st.session_state['stvideo_state'], st.session_state['interactive_state'])
 
 #Put code onto pc and test
 #if works, focus on slider for track end number

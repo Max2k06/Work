@@ -28,7 +28,7 @@ def get_model(args: dict):
     xmem_checkpoint = download_checkpoint(xmem_checkpoint_url, folder, xmem_checkpoint)
     e2fgvi_checkpoint = download_checkpoint_from_google_drive(e2fgvi_checkpoint_id, folder, e2fgvi_checkpoint)
     args.port = 12212
-    args.device = "cpu"
+    args.device = "cuda"
     # args.mask_save = True
 
     # initialize sam, xmem, e2fgvi models
