@@ -40,19 +40,10 @@ uploaded_video= col1.file_uploader("Upload a video to track within")
 
 st.video(uploaded_video)
 
-mask_selecter= st.selectbox(
-    "Choose mask",
-    ["mask", "flask", "dusk"]
-)
 st.session_state['point_prompt']= str(st.radio(
     "Choose point type",["Positive", "Negative"]))
 
-add_mask_button= st.button(
-    "Add Mask"
-)
-remove_mask_button= st.button(
-    "Remove Mask"
-)
+st.write('Note: If mask needs to be removed/exlcuded, place negative point on the mask')
 
 if 'stvideo_state' not in st.session_state:
     st.session_state['stvideo_state']={}
@@ -94,18 +85,9 @@ if 'selected_point' in st.session_state:
     del st.session_state['selected_point']
     st.experimental_rerun()
 
-st.button("Track?", on_click=vos_tracking_video,args=(st.session_state['model'], st.session_state['stvideo_state'], st.session_state['interactive_state']))
+if 'video_info' in st.session_state['stvideo_state']:
+    st.button("Track", on_click=vos_tracking_video,args=(st.session_state['model'], st.session_state['stvideo_state'], st.session_state['interactive_state']))
 
 if 'video_output' in st.session_state['stvideo_state']:
     print(st.session_state['stvideo_state']['video_output'])
     st.video(st.session_state['stvideo_state']['video_output'])
-
-
-#Put code onto pc and test
-#if works, focus on slider for track end number
-# Put print statement between line 92 and 93 and see if condition evaluates to true after interact
-
-#IMP-on multiple clicks line 277 controllers shows key error 
-# Attempting to use try and except to solve above error as even after recieving error, once i re ran, error disappeared and program worked
-
-#who define image selection slider and why is the list of origin images 360 and does it change when the slider is changed 
