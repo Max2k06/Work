@@ -1,3 +1,4 @@
+import random
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -10,7 +11,7 @@ from skimage import io
 from track_anything import parse_augment
 from model import get_model
 from streamlit_plotly_events import plotly_events
-
+from datetime import datetime
 
 
 
@@ -59,11 +60,18 @@ if 'stvideo_state' not in st.session_state:
 st.button(
     "Extract Frames", on_click= get_frames_from_video, args=(st.session_state['model'], uploaded_video, st.session_state['stvideo_state'])
     )
+def delete_fig():
+    if 'fig' in st.session_state:
+        del st.session_state["fig"]
 
 if 'video_info' in st.session_state['stvideo_state'] :
+    if "origin_images" in st.session_state["stvideo_state"]:
+        slider_info= st.slider('Choose Frame', min_value=0, max_value=len(st.session_state['stvideo_state']['origin_images'])-1, value=(0, len(st.session_state['stvideo_state']['origin_images'])-1), on_change= delete_fig)
+        get_end_number(slider_info[1], st.session_state['stvideo_state'], st.session_state['interactive_state'])
+        select_template(st.session_state['model'], slider_info[0], st.session_state['stvideo_state'], st.session_state['interactive_state'])
     st.write(st.session_state['stvideo_state']["video_info"])
     if 'fig' not in st.session_state:
-        st.session_state['fig']= px.imshow(st.session_state['stvideo_state']["origin_images"][0])
+        st.session_state['fig']= px.imshow(st.session_state['stvideo_state']["origin_images"][st.session_state["stvideo_state"]["select_frame_number"]])
     try:
         st.session_state['selected_point']= plotly_events(st.session_state['fig']).pop()
         st.write(st.session_state['selected_point'])
@@ -71,11 +79,10 @@ if 'video_info' in st.session_state['stvideo_state'] :
         pass
    
 if 'interactive_state' not in st.session_state:
-    st.session_state['interactive_state']= {"positive_click_times":0, "negative_click_times":0, "inference_times":0}
+    st.session_state['interactive_state']= {"positive_click_times":0, "negative_click_times":0, "inference_times":0, "mask_save":True}
 
 if 'click_state' not in st.session_state:
     st.session_state['click_state']= [[], []]
-
 
 if 'selected_point' in st.session_state:
     x_coordinate= st.session_state['selected_point']['x']
@@ -90,13 +97,15 @@ if 'selected_point' in st.session_state:
 st.button("Track?", on_click=vos_tracking_video,args=(st.session_state['model'], st.session_state['stvideo_state'], st.session_state['interactive_state']))
 
 if 'video_output' in st.session_state['stvideo_state']:
+    print(st.session_state['stvideo_state']['video_output'])
     st.video(st.session_state['stvideo_state']['video_output'])
 
-# slider_info= st.slider('Choose Frame', min_value=0, max_value=len(st.session_state['stvideo_state']['origin_images'])-1, value=(0, len(st.session_state['stvideo_state']['origin_images'])-1))
-
-# get_end_number(slider_info[1], st.session_state['stvideo_state'], st.session_state['interactive_state'])
-# select_template(st.session_state['model'], slider_info[0], st.session_state['stvideo_state'], st.session_state['interactive_state'])
 
 #Put code onto pc and test
 #if works, focus on slider for track end number
 # Put print statement between line 92 and 93 and see if condition evaluates to true after interact
+
+#IMP-on multiple clicks line 277 controllers shows key error 
+# Attempting to use try and except to solve above error as even after recieving error, once i re ran, error disappeared and program worked
+
+#who define image selection slider and why is the list of origin images 360 and does it change when the slider is changed 

@@ -1,4 +1,5 @@
 #remove gradio after finding type definition for selectdata
+from datetime import datetime
 import gradio as gr
 import argparse
 import gdown
@@ -229,12 +230,14 @@ def show_mask(video_state, interactive_state, mask_dropdown):
 def vos_tracking_video(model, video_state, interactive_state, mask_dropdown=[]):
     operation_log = [("",""), ("Track the selected masks, and then you can select the masks for inpainting.","Normal")]
     model.xmem.clear_memory()
-    if 'track_end_number' in interactive_state and interactive_state["track_end_number"]:
+    if 'track_end_number' in interactive_state:
+        print(video_state["select_frame_number"])
+        print(interactive_state["track_end_number"])
         following_frames = video_state["origin_images"][video_state["select_frame_number"]:interactive_state["track_end_number"]]
     else:
         following_frames = video_state["origin_images"][video_state["select_frame_number"]:]
 
-    if 'multi_mask' in interactive_state and interactive_state["multi_mask"]["masks"]:
+    if 'multi_mask' in interactive_state:
         if len(mask_dropdown) == 0:
             mask_dropdown = ["mask_001"]
         mask_dropdown.sort()
@@ -265,7 +268,7 @@ def vos_tracking_video(model, video_state, interactive_state, mask_dropdown=[]):
         video_state["logits"][video_state["select_frame_number"]:] = logits
         video_state["painted_images"][video_state["select_frame_number"]:] = painted_images
 
-    video_state['video_output'] = generate_video_from_frames(video_state["painted_images"], output_path="./result/track/{}".format(video_state["video_name"]), fps=fps) # import video_input to name the output video
+    video_state['video_output'] = generate_video_from_frames(video_state["painted_images"], output_path=f"./result/track/{datetime.now().timestamp()}-{video_state['video_name']}", fps=fps) # import video_input to name the output video
     interactive_state["inference_times"] += 1
     
     print("For generating this tracking result, inference times: {}, click times: {}, positive: {}, negative: {}".format(interactive_state["inference_times"], 
@@ -284,7 +287,7 @@ def vos_tracking_video(model, video_state, interactive_state, mask_dropdown=[]):
             i+=1
         # save_mask(video_state["masks"], video_state["video_name"])
     #### shanggao code for mask save
-    return video_output, video_state, interactive_state, operation_log
+    return video_state, interactive_state, operation_log
 
 # extracting masks from mask_dropdown
 # def extract_sole_mask(video_state, mask_dropdown):
