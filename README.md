@@ -1,5 +1,5 @@
-Track Anything with Streamlit
-📌 Overview
+# Track Anything with Streamlit
+# 📌 Overview
 
 This project extends the Track-Anything
  framework with a Streamlit-based interface, making it easier to experiment with video object tracking and segmentation. By integrating Segment Anything
@@ -7,39 +7,43 @@ This project extends the Track-Anything
 
 The app is designed to make cutting-edge research more accessible, visual, and interactive, while supporting real-world applications such as:
 
-🎬 Video object tracking & segmentation – across shots, scene changes, and complex motion.
+<ul>
+<li>🎬 Video object tracking & segmentation – across shots, scene changes, and complex motion.</li> 
 
-🖌 Annotation tools – for creating high-quality segmentation datasets.
+<li>🖌 Annotation tools – for creating high-quality segmentation datasets.</li>
 
-🎨 Video inpainting and editing – removing or replacing objects across entire sequences.
+<li>🎨 Video inpainting and editing – removing or replacing objects across entire sequences.</li>
 
-🛠 Research & prototyping – quickly testing and visualizing segmentation workflows.
+<li>🛠 Research & prototyping – quickly testing and visualizing segmentation workflows.</li>
+</ul>
 
-🚀 Features
 
-Streamlit UI for interactive object selection and tracking.
+# 🚀 Features
+<ul>
+<li>Streamlit UI for interactive object selection and tracking.</li>
 
-Mask-based tracking across video frames.
+<li>Mask-based tracking across video frames.</li>
 
-Dynamic corrections – refine or change tracked objects mid-sequence.
+<li>Dynamic corrections – refine or change tracked objects mid-sequence.</li>
 
-Support for multi-object tracking in the same video.
+<li>Support for multi-object tracking in the same video.</li>
 
-Built on top of Segment Anything + Track-Anything core.
+<li>Built on top of Segment Anything + Track-Anything core.</li>
+</ul>
 
-🎥 Example Workflow
+# 🎥 Example Workflow
 
-Upload or stream a video.
+1. Upload or stream a video.
 
-Click on an object of interest in the first frame.
+2. Click on an object of interest in the first frame.
 
-Generate a segmentation mask with Segment Anything.
+3. Generate a segmentation mask with Segment Anything.
 
-Track the mask across multiple frames.
+4. Track the mask across multiple frames.
 
 Optionally refine, edit, or export the results.
 
-⚡ Installation
+# ⚡ Installation
 
 Clone the repository and install dependencies:
 
@@ -48,6 +52,7 @@ cd track-anything-streamlit
 
 # Create a virtual environment (recommended)
 conda create -n track-anything python=3.9
+
 conda activate track-anything
 
 # Install requirements
