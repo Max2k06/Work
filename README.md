@@ -1,89 +1,68 @@
-<!-- ![](./assets/track-anything-logo.jpg) -->
+Track Anything with Streamlit
+📌 Overview
 
-<div align=center>
-<img src="./assets/track-anything-logo.jpg"/>
-</div>
-<br/>
-<div align=center>
-<a src="https://img.shields.io/badge/%F0%9F%93%96-Arxiv_2304.11968-red.svg?style=flat-square" href="https://arxiv.org/abs/2304.11968">
-<img src="https://img.shields.io/badge/%F0%9F%93%96-Arxiv_2304.11968-red.svg?style=flat-square">
-</a>
-<a src="https://img.shields.io/badge/%F0%9F%A4%97-Open_in_Spaces-informational.svg?style=flat-square" href="https://huggingface.co/spaces/VIPLab/Track-Anything?duplicate=true">
-<img src="https://img.shields.io/badge/%F0%9F%A4%97-Hugging_Face_Space-informational.svg?style=flat-square">
-</a>
-<a src="https://img.shields.io/badge/%F0%9F%97%BA-Tutorials in Steps-2bb7b3.svg?style=flat-square" href="./doc/tutorials.md">
-<img src="https://img.shields.io/badge/%F0%9F%97%BA-Tutorials in Steps-2bb7b3.svg?style=flat-square">
+This project extends the Track-Anything
+ framework with a Streamlit-based interface, making it easier to experiment with video object tracking and segmentation. By integrating Segment Anything
+ into an interactive web app, users can select objects with simple clicks and track them across multiple frames using masks.
 
-</a>
-<a src="https://img.shields.io/badge/%F0%9F%9A%80-SUSTech_VIP_Lab-ed6c00.svg?style=flat-square" href="https://zhengfenglab.com/">
-<img src="https://img.shields.io/badge/%F0%9F%9A%80-SUSTech_VIP_Lab-ed6c00.svg?style=flat-square">
-</a>
-</div>
+The app is designed to make cutting-edge research more accessible, visual, and interactive, while supporting real-world applications such as:
 
-***Track-Anything*** is a flexible and interactive tool for video object tracking and segmentation. It is developed upon [Segment Anything](https://github.com/facebookresearch/segment-anything), can specify anything to track and segment via user clicks only. During tracking, users can flexibly change the objects they wanna track or correct the region of interest if there are any ambiguities. These characteristics enable ***Track-Anything*** to be suitable for: 
-- Video object tracking and segmentation with shot changes. 
-- Visualized development and data annotation for video object tracking and segmentation.
-- Object-centric downstream video tasks, such as video inpainting and editing. 
+🎬 Video object tracking & segmentation – across shots, scene changes, and complex motion.
 
-<div align=center>
-<img src="./assets/avengers.gif" width="81%"/>
-</div>
+🖌 Annotation tools – for creating high-quality segmentation datasets.
 
-<!-- ![avengers]() -->
+🎨 Video inpainting and editing – removing or replacing objects across entire sequences.
 
-## :rocket: Updates
+🛠 Research & prototyping – quickly testing and visualizing segmentation workflows.
 
-- 2023/05/02: We uploaded tutorials in steps :world_map:. Check [HERE](./doc/tutorials.md) for more details.
+🚀 Features
 
-- 2023/04/29: We improved inpainting by decoupling GPU memory usage and video length. Now Track-Anything can inpaint videos with any length! :smiley_cat: Check [HERE](https://github.com/gaomingqi/Track-Anything/issues/4#issuecomment-1528198165) for our GPU memory requirements. 
+Streamlit UI for interactive object selection and tracking.
 
-- 2023/04/25: We are delighted to introduce [Caption-Anything](https://github.com/ttengwang/Caption-Anything) :writing_hand:, an inventive project from our lab that combines the capabilities of Segment Anything, Visual Captioning, and ChatGPT. 
+Mask-based tracking across video frames.
 
-- 2023/04/20: We deployed [DEMO](https://huggingface.co/spaces/VIPLab/Track-Anything?duplicate=true) on Hugging Face :hugs:!
+Dynamic corrections – refine or change tracked objects mid-sequence.
 
-- 2023/04/14: We made Track-Anything public!
+Support for multi-object tracking in the same video.
 
-## :world_map: Video Tutorials ([Track-Anything Tutorials in Steps](./doc/tutorials.md))
+Built on top of Segment Anything + Track-Anything core.
 
-https://user-images.githubusercontent.com/30309970/234902447-a4c59718-fcfe-443a-bd18-2f3f775cfc13.mp4
+🎥 Example Workflow
 
----
+Upload or stream a video.
 
-### :joystick: Example - Multiple Object Tracking and Segmentation (with [XMem](https://github.com/hkchengrex/XMem))
+Click on an object of interest in the first frame.
 
-https://user-images.githubusercontent.com/39208339/233035206-0a151004-6461-4deb-b782-d1dbfe691493.mp4
+Generate a segmentation mask with Segment Anything.
 
----
+Track the mask across multiple frames.
 
-### :joystick: Example - Video Object Tracking and Segmentation with Shot Changes (with [XMem](https://github.com/hkchengrex/XMem))
+Optionally refine, edit, or export the results.
 
-https://user-images.githubusercontent.com/30309970/232848349-f5e29e71-2ea4-4529-ac9a-94b9ca1e7055.mp4
+⚡ Installation
 
----
+Clone the repository and install dependencies:
 
-### :joystick: Example - Video Inpainting (with [E2FGVI](https://github.com/MCG-NKU/E2FGVI))
+git clone https://github.com/<your-username>/track-anything-streamlit.git
+cd track-anything-streamlit
 
-https://user-images.githubusercontent.com/28050374/232959816-07f2826f-d267-4dda-8ae5-a5132173b8f4.mp4
+# Create a virtual environment (recommended)
+conda create -n track-anything python=3.9
+conda activate track-anything
 
-## :computer: Get Started
-#### Linux & Windows
-```shell
-# Clone the repository:
-git clone https://github.com/gaomingqi/Track-Anything.git
-cd Track-Anything
-
-# Install dependencies: 
+# Install requirements
 pip install -r requirements.txt
 
-# Run the Track-Anything gradio demo.
-python app.py --device cuda:0
-# python app.py --device cuda:0 --sam_model_type vit_b # for lower memory usage
-```
+▶️ Running the App
+streamlit run app.py
 
 
-## :book: Citation
-If you find this work useful for your research or applications, please cite using this BibTeX:
-```bibtex
+Open the provided local URL in your browser to interact with the app.
+
+📚 Citation
+
+If you build on this project, please give credit to the original authors of Track-Anything:
+
 @misc{yang2023track,
       title={Track Anything: Segment Anything Meets Videos}, 
       author={Jinyu Yang and Mingqi Gao and Zhe Li and Shang Gao and Fangjing Wang and Feng Zheng},
@@ -92,8 +71,11 @@ If you find this work useful for your research or applications, please cite usin
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
-```
 
-## :clap: Acknowledgements
+🙏 Acknowledgements
 
-The project is based on [Segment Anything](https://github.com/facebookresearch/segment-anything), [XMem](https://github.com/hkchengrex/XMem), and [E2FGVI](https://github.com/MCG-NKU/E2FGVI). Thanks for the authors for their efforts.
+Track-Anything
+
+Segment Anything
+
+Streamlit
