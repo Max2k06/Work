@@ -47,7 +47,7 @@ Optionally refine, edit, or export the results.
 
 Clone the repository and install dependencies:
 
-git clone https://github.com/Max2k06/track-anything-ai-model.git
+git clone https://github.com/Max2k06/Track-Anything-AI-Model.git
 
 cd track-anything-streamlit
 
